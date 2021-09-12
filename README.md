@@ -1,5 +1,4 @@
 # SimplePasswordGeneration_Cpp
-A simple password generator (using Cpp and Qt) 
 
 ---
 # 基本介绍
