@@ -1,28 +1,27 @@
 #include"Password_Group.h"
+#include"base.h"
 
-using namespace std;
-
-Password_Group::Password_Group() 
+Password_Group::Password_Group()
 {
-	password_level = 0;
+	password_grade = None;
 };
 Password_Group::~Password_Group() {};
 
 void Password_Group::Show_all_info()
 {
-	Show_values();
+	Show_password_composition();
 	Show_password_tags();
-	Show_password_level();
+	Show_password_grade();
 };
-void Password_Group::Show_values()
+void Password_Group::Show_password_composition()
 {
-	if (password_values.empty())
+	if (password_composition.empty())
 	{
-		cout << "no password_values" << endl;
+		cout << "no password_composition" << endl;
 	}
 	else
 	{
-		for (auto iter = password_values.cbegin(); iter != password_values.cend(); iter++)
+		for (auto iter = password_composition.cbegin(); iter != password_composition.cend(); iter++)
 		{
 			cout << *iter << " ";
 		}
@@ -44,21 +43,24 @@ void Password_Group::Show_password_tags()
 		cout << endl;
 	}
 };
-void Password_Group::Show_password_level()
+void Password_Group::Show_password_grade()
 {
-	switch (password_level)
+	switch (password_grade)
 	{
-	case 1:
+	case None:
+		cout << "none" << endl;
+		break;
+	case Low:
 		cout << "low" << endl;
 		break;
-	case 2:
+	case Medium:
 		cout << "medium" << endl;
 		break;
-	case 3:
-		cout << "heigh" << endl;
+	case High:
+		cout << "high" << endl;
 		break;
 	default:
-		cout << "none" << endl;
+		cout << "error" << endl;
 		break;
 	}
 };
@@ -81,8 +83,53 @@ bool Password_Group::Search_in_tags(string need_tag)
 	}
 	return false;
 };
-unsigned int Password_Group::Get_password_level()
+Password_Grade Password_Group::Get_password_grade()
 {
-	return password_level;
+	return password_grade;
 };
 
+void Password_Group::Write_password_composition(const string& line, const string& separator)
+{
+	Split(line, separator, password_composition);
+};
+void Password_Group::Write_password_tags(const string& line, const string& separator)
+{
+	Split(line, separator, password_tags);
+};
+void Password_Group::Write_password_grade(const string& line, const string& separator)
+{
+	//如果结尾不为, 直接跳过
+	if (!(line.ends_with(separator + "\n") || line.ends_with(separator)))
+	{
+		password_grade = None;
+	}
+	else
+	{
+		//UTF-8中文字符判断
+		char8_t level_chars[10] = u8"弱中强";
+
+		for (int i = 0; i < 3; i++)
+		{
+			if (level_chars[i * 3] == (char8_t)line.at(0) &&
+				level_chars[i * 3 + 1] == (char8_t)line.at(1) &&
+				level_chars[i * 3 + 2] == (char8_t)line.at(2))
+			{
+				switch (i)
+				{
+				case 0:
+					password_grade = Low;
+					break;
+				case 1:
+					password_grade = Medium;
+					break;
+				case 2:
+					password_grade = High;
+					break;
+				default:
+					password_grade = None;
+					break;
+				}
+			}
+		}
+	}
+};

@@ -2,26 +2,51 @@
 #include<iostream>
 #include<vector>
 #include<string>
+#include <fstream> 
 
 using namespace std;
+
+enum Password_Grade
+{
+	None = 0,
+	Low,
+	Medium,
+	High
+};
+
 
 class Password_Group
 {
 private:
-	vector<string> password_values;//密码组成值
+	vector<string> password_composition;//密码组成值
 	vector<string> password_tags;//密码标签
-	unsigned int password_level;//密码分类
+	Password_Grade password_grade;//密码分类
 public:
-	Password_Group() {};
-	~Password_Group() {};
+	Password_Group();
+	~Password_Group();
 
 	/*------显示函数------*/
-	void Show_all_info();//显示该组信息所有内容
-	void Show_values();//显示密码组成值
-	void Show_password_tags();//显示密码标签
-	void Show_password_level();//显示密码分类
+	//显示该组信息所有内容
+	void Show_all_info();
+	//显示密码组成值
+	void Show_password_composition();
+	//显示密码标签
+	void Show_password_tags();
+	//显示密码分类
+	void Show_password_grade();
 
 	/*------功能函数------*/
-	unsigned int Get_password_level();//获取密码分类
-	bool Search_in_tags(string need_tag);//寻找密码标签
+	/*------Get and Search-----*/
+	//获取密码分类
+	Password_Grade Get_password_grade();
+	//寻找密码标签
+	bool Search_in_tags(string need_tag);
+
+	/*------Write-----*/
+	//写入密码组成值
+	void Write_password_composition(const string& line, const string& separator);
+	//写入密码标签
+	void Write_password_tags(const string& line, const string& separator);
+	//写入密码分类
+	void Write_password_grade(const string& line, const string& separator);
 };
