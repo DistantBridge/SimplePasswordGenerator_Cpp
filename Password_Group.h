@@ -1,8 +1,10 @@
 #pragma once
+#include"base.h"
 #include<iostream>
 #include<vector>
 #include<string>
 #include <fstream> 
+#include <algorithm>
 
 using namespace std;
 
@@ -36,12 +38,16 @@ public:
 	void Show_password_grade();
 
 	/*------功能函数------*/
-	/*------Get and Search-----*/
+	/*------Get-----*/
+	//获取密码组成值
+	vector<string> Get_password_composition();
 	//获取密码分类
 	Password_Grade Get_password_grade();
 	//获取密码标签
 	vector<string> Get_password_tags();
-	//寻找密码标签
+
+	/*-----Search-----*/
+	//寻找特定密码标签是否存在
 	bool Search_in_tags(string need_tag);
 
 	/*------Write-----*/

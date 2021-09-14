@@ -1,18 +1,19 @@
 #include"Password_Group.h"
 #include<cstdlib>
-#include<algorithm>
 
 using namespace std;
 
 #define PASSWORD_KEYWORDS_PATH "Password_Keywords.txt" //txt文件 路径
 #define SEPARATOR "," //txt文件 分隔符
 
+ifstream keywords_file(PASSWORD_KEYWORDS_PATH);//文件流
 
 vector<Password_Group> all_Groups;//从txt文件中读取所有组并保存
 vector<string> all_tags;//所有密码标签
+
+vector<string> selected_tag;//用户选择的密码标签
 vector<string> selected_password_values_pool;//用户选择密码标签后，寻找符合的密码组并且存储
 
-ifstream keywords_file(PASSWORD_KEYWORDS_PATH);//文件流
 
 bool Import_from_file()//导入txt文件内容
 {
@@ -100,6 +101,52 @@ void Collect_all_tags()//收集所有密码标签,排序后去重
 	all_tags.erase(all_tags_new_end, all_tags_end);
 }
 
+void User_select_tags()//用户选择密码标签并做输入检查
+{
+	bool select_end = false;
+
+	while (!select_end)
+	{
+		cout << "Please enter index of password tags with correct speartor (" << SEPARATOR << ")" << endl;
+
+		//清除输入流缓存
+		cin.clear();
+		cin.sync();
+
+		string user_input;
+		getline(cin, user_input);
+
+		if (Check_user_input_is_index(user_input, SEPARATOR))
+		{
+			vector<string> selected_tag_index;
+			Split(user_input, SEPARATOR, selected_tag_index);
+
+			//存储用户选择的密码标签
+			for (int i = 0; i < selected_tag_index.size(); i++)
+			{
+				int index_number;
+
+				int is_error = sscanf_s(selected_tag_index[i].c_str(), "%d", &index_number);
+				//sscanf转换检查和下标访问越界检查
+				if (!is_error || index_number <0 || index_number+1>all_tags.size())
+				{
+					cout << "Enter error index , please enter again" << endl;
+					continue;
+				}
+
+				selected_tag.push_back(all_tags.at(index_number));
+			}
+
+			select_end = true;
+		}
+		else
+		{
+			cout << "Please enter again" << endl;
+			continue;
+		}
+	}
+}
+
 int main()
 {
 	system("title SimplePasswordGeneration");
@@ -110,6 +157,9 @@ int main()
 		Show_all_groups();
 		Collect_all_tags();
 		Show_all_tags();
+
+		User_select_tags();
+
 	}
 
 	system("pause");

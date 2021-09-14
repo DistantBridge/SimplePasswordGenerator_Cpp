@@ -1,5 +1,4 @@
 #include"Password_Group.h"
-#include"base.h"
 
 Password_Group::Password_Group()
 {
@@ -70,25 +69,24 @@ void Password_Group::Show_password_grade()
 
 bool Password_Group::Search_in_tags(string need_tag)
 {
-	if (password_tags.empty())
+	vector<string>::iterator it = find(password_tags.begin(), password_tags.end(), need_tag);
+	if (it != password_tags.end())
 	{
-		return false;
+		return true;
 	}
 	else
 	{
-		for (auto iter = password_tags.cbegin(); iter != password_tags.cend(); iter++)
-		{
-			if (*iter == need_tag)
-			{
-				return true;
-			}
-		}
+		return false;
 	}
-	return false;
+
 }
 vector<string> Password_Group::Get_password_tags()
 {
 	return password_tags;
+}
+vector<string> Password_Group::Get_password_composition()
+{
+	return password_composition;
 }
 Password_Grade Password_Group::Get_password_grade()
 {
