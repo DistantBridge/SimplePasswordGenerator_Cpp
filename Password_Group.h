@@ -39,6 +39,8 @@ public:
 	/*------Get and Search-----*/
 	//获取密码分类
 	Password_Grade Get_password_grade();
+	//获取密码标签
+	vector<string> Get_password_tags();
 	//寻找密码标签
 	bool Search_in_tags(string need_tag);
 

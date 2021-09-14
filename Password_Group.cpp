@@ -4,15 +4,15 @@
 Password_Group::Password_Group()
 {
 	password_grade = None;
-};
-Password_Group::~Password_Group() {};
+}
+Password_Group::~Password_Group() {}
 
 void Password_Group::Show_all_info()
 {
 	Show_password_composition();
 	Show_password_tags();
 	Show_password_grade();
-};
+}
 void Password_Group::Show_password_composition()
 {
 	if (password_composition.empty())
@@ -21,30 +21,33 @@ void Password_Group::Show_password_composition()
 	}
 	else
 	{
+		cout << "composition:  ";
 		for (auto iter = password_composition.cbegin(); iter != password_composition.cend(); iter++)
 		{
 			cout << *iter << " ";
 		}
 		cout << endl;
 	}
-};
+}
 void Password_Group::Show_password_tags()
 {
 	if (password_tags.empty())
 	{
-		cout << "no password_tags" << endl;
+		cout << "no password tags" << endl;
 	}
 	else
 	{
+		cout << "       tags:  ";
 		for (auto iter = password_tags.cbegin(); iter != password_tags.cend(); iter++)
 		{
 			cout << *iter << " ";
 		}
 		cout << endl;
 	}
-};
+}
 void Password_Group::Show_password_grade()
 {
+	cout << "      grade:  ";
 	switch (password_grade)
 	{
 	case None:
@@ -63,7 +66,7 @@ void Password_Group::Show_password_grade()
 		cout << "error" << endl;
 		break;
 	}
-};
+}
 
 bool Password_Group::Search_in_tags(string need_tag)
 {
@@ -82,20 +85,24 @@ bool Password_Group::Search_in_tags(string need_tag)
 		}
 	}
 	return false;
-};
+}
+vector<string> Password_Group::Get_password_tags()
+{
+	return password_tags;
+}
 Password_Grade Password_Group::Get_password_grade()
 {
 	return password_grade;
-};
+}
 
 void Password_Group::Write_password_composition(const string& line, const string& separator)
 {
 	Split(line, separator, password_composition);
-};
+}
 void Password_Group::Write_password_tags(const string& line, const string& separator)
 {
 	Split(line, separator, password_tags);
-};
+}
 void Password_Group::Write_password_grade(const string& line, const string& separator)
 {
 	//如果结尾不为, 直接跳过
@@ -132,4 +139,4 @@ void Password_Group::Write_password_grade(const string& line, const string& sepa
 			}
 		}
 	}
-};
+}
