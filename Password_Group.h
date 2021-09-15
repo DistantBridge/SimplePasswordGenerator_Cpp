@@ -8,13 +8,7 @@
 
 using namespace std;
 
-enum Password_Grade
-{
-	None = 0,
-	Low,
-	Medium,
-	High
-};
+
 
 
 class Password_Group
@@ -40,15 +34,11 @@ public:
 	/*------功能函数------*/
 	/*------Get-----*/
 	//获取密码组成值
-	vector<string> Get_password_composition();
+	vector<string>& Get_password_composition();
 	//获取密码分类
 	Password_Grade Get_password_grade();
 	//获取密码标签
 	vector<string> Get_password_tags();
-
-	/*-----Search-----*/
-	//寻找特定密码标签是否存在
-	bool Search_in_tags(string need_tag);
 
 	/*------Write-----*/
 	//写入密码组成值

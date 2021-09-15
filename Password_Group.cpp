@@ -2,7 +2,7 @@
 
 Password_Group::Password_Group()
 {
-	password_grade = None;
+	password_grade = Password_Grade::None;
 }
 Password_Group::~Password_Group() {}
 
@@ -49,16 +49,16 @@ void Password_Group::Show_password_grade()
 	cout << "      grade:  ";
 	switch (password_grade)
 	{
-	case None:
+	case Password_Grade::None:
 		cout << "none" << endl;
 		break;
-	case Low:
+	case Password_Grade::Low:
 		cout << "low" << endl;
 		break;
-	case Medium:
+	case Password_Grade::Medium:
 		cout << "medium" << endl;
 		break;
-	case High:
+	case Password_Grade::High:
 		cout << "high" << endl;
 		break;
 	default:
@@ -67,24 +67,11 @@ void Password_Group::Show_password_grade()
 	}
 }
 
-bool Password_Group::Search_in_tags(string need_tag)
-{
-	vector<string>::iterator it = find(password_tags.begin(), password_tags.end(), need_tag);
-	if (it != password_tags.end())
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-
-}
 vector<string> Password_Group::Get_password_tags()
 {
 	return password_tags;
 }
-vector<string> Password_Group::Get_password_composition()
+vector<string>& Password_Group::Get_password_composition()
 {
 	return password_composition;
 }
@@ -103,37 +90,29 @@ void Password_Group::Write_password_tags(const string& line, const string& separ
 }
 void Password_Group::Write_password_grade(const string& line, const string& separator)
 {
-	//如果结尾不为, 直接跳过
-	if (!(line.ends_with(separator + "\n") || line.ends_with(separator)))
-	{
-		password_grade = None;
-	}
-	else
-	{
-		//UTF-8中文字符判断
-		char8_t level_chars[10] = u8"弱中强";
+	//UTF-8中文字符判断
+	char8_t level_chars[10] = u8"弱中强";
 
-		for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 3; i++)
+	{
+		if (level_chars[i * 3] == (char8_t)line.at(0) &&
+			level_chars[i * 3 + 1] == (char8_t)line.at(1) &&
+			level_chars[i * 3 + 2] == (char8_t)line.at(2))
 		{
-			if (level_chars[i * 3] == (char8_t)line.at(0) &&
-				level_chars[i * 3 + 1] == (char8_t)line.at(1) &&
-				level_chars[i * 3 + 2] == (char8_t)line.at(2))
+			switch (i)
 			{
-				switch (i)
-				{
-				case 0:
-					password_grade = Low;
-					break;
-				case 1:
-					password_grade = Medium;
-					break;
-				case 2:
-					password_grade = High;
-					break;
-				default:
-					password_grade = None;
-					break;
-				}
+			case 0:
+				password_grade = Password_Grade::Low;
+				break;
+			case 1:
+				password_grade = Password_Grade::Medium;
+				break;
+			case 2:
+				password_grade = Password_Grade::High;
+				break;
+			default:
+				password_grade = Password_Grade::None;
+				break;
 			}
 		}
 	}
