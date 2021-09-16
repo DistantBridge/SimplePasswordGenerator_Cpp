@@ -27,31 +27,43 @@ bool Import_from_file()//导入txt文件内容
 
 	if (keywords_file)
 	{
-		while (!keywords_file.eof())
+		while (!keywords_file.eof() && keywords_file.peek() != EOF)
 		{
 			Password_Group this_group;
 			for (int i = 0; i < 4; i++)
 			{
 				getline(keywords_file, line);
-				switch (i)
+
+				if (line.empty())
 				{
-				case 0:
 					continue;
-					break;
-				case 1:
-					this_group.Write_password_composition(line, SEPARATOR);
-					break;
-				case 2:
-					this_group.Write_password_tags(line, SEPARATOR);
-					break;
-				case 3:
-					this_group.Write_password_grade(line, SEPARATOR);
-					break;
-				default:
-					break;
+				}
+				else
+				{
+					switch (i)
+					{
+					case 0:
+						continue;
+						break;
+					case 1:
+						this_group.Write_password_composition(line, SEPARATOR);
+						break;
+					case 2:
+						this_group.Write_password_tags(line, SEPARATOR);
+						break;
+					case 3:
+						this_group.Write_password_grade(line, SEPARATOR);
+						break;
+					default:
+						break;
+					}
 				}
 			}
-			all_Groups.push_back(this_group);
+
+			if (!this_group.Get_password_composition().empty() && !this_group.Get_password_tags().empty())
+			{
+				all_Groups.push_back(this_group);
+			}
 		}
 
 		keywords_file.close();
@@ -286,8 +298,8 @@ void Create_password()
 		}
 
 		cout << "password is: " << output << endl;
-		
-	label:		
+
+	label:
 		cin.clear();
 		cin.sync();
 		cout << "Do you want to recreate another password ? [1---yes / 0---no]" << endl;
